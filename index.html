@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/output.css" />
+  </head>
+  <style>
+    .row {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    button {
+      background: white;
+      color: black;
+      padding: 10px 30px;
+      border-radius: 35px;
+      border: 0;
+      outline: none;
+      cursor: pointer;
+    }
+    select {
+      flex: 1;
+      color: black;
+      background: white;
+      height: 40px;
+      padding: 10px 30px;
+      outline: none;
+      border: 0;
+      border-radius: 35px;
+    }
+  </style>
+  <body>
+    <section class="w-full h-screen bg-gradient-to-tr from-black to-green-600">
+      <div
+        class="w-[95%] h-screen mx-auto flex flex-col place-content-center items-center"
+      >
+        <h1 class="text-white font-serif text-center pt-[20px] text-3xl">
+          Text to speech app
+        </h1>
+        <textarea
+          class="w-full mt-[50px] h-[200px] rounded-lg p-[20px]"
+          name=""
+          id=""
+          placeholder="write for here first...."
+        ></textarea>
+        <div class="row w-full mt-[30px]">
+          <select name="" id=""></select>
+          <button>listen</button>
+        </div>
+      </div>
+    </section>
+  </body>
+  <script>
+    let speech = new SpeechSynthesisUtterance();
+
+    let voices = [];
+
+    let voiceSelect = document.querySelector("select");
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices();
+      speech.voice = voices[0];
+
+      voices.forEach(
+        (voice, i) => (voiceSelect.options[i] = new Option(voice.name, i))
+      );
+    };
+
+    voiceSelect.addEventListener("change", () => {
+      speech.voice = voices[voiceSelect.value];
+    });
+
+    document.querySelector("button").addEventListener("click", () => {
+      speech.text = document.querySelector("textarea").value;
+      window.speechSynthesis.speak(speech);
+    });
+  </script>
+</html>
